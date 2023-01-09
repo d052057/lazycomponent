@@ -1,0 +1,2 @@
+C:\Users\admin\source\repos\lazycomponent\lazycomponent\obj\Debug\lazycomponent.esproj.SuggestedBindingRedirects.cache
+C:\Users\admin\source\repos\lazycomponent\lazycomponent\obj\Debug\lazycomponent.esproj.CoreCompileInputs.cache
