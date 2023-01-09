@@ -33,7 +33,6 @@ export class AppComponent {
   }
   async getAlbum() {
     const { AlbumComponent } = await import("src/app/album/album.component");
-    this.viewContainer.createComponent(AlbumComponent);
     const componentRef:ComponentRef<any> = this.viewContainer.createComponent(AlbumComponent);
     componentRef.location.nativeElement.classList.add('fade');
   }
