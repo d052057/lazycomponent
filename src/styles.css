@@ -1,8 +1,6 @@
-.fade {
-  animation: fadeIn ease-in 2s;
-  animation: fadeOut ease-out 2s;
+.fadeMeIn {
+  animation: fadeIn ease-in 1s;
 }
-
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -12,14 +10,15 @@
     opacity: 1;
   }
 }
-
+.fadeMeOut {
+   animation: fadeOut ease-out 1s forwards;
+}
 @keyframes fadeOut {
   0% {
-    opacity: 0;
-  }
-
-  100% {
     opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
 
