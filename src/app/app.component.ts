@@ -26,12 +26,12 @@ export class AppComponent {
   }
 
   async getExample(value: string) {
-    //const animation = (value: string, callback: any): any => {
-    //  this.loadObject(value);
+    //const loadComponent = (value: string, callback: any): any => {
+    //  this.loadObjectComponent(value);
     //  callback();
       
     //};
-    //animation(value, this.fadeout());
+    //loadComponent(value, this.fadeout());
     
     // this must be done first
     if (this.componentRef) {
