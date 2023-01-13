@@ -1,4 +1,5 @@
-import { Component, ViewContainerRef, ViewChild, ComponentFactoryResolver, ComponentRef } from '@angular/core';
+import { Component, ViewContainerRef, ViewChild, ComponentRef, ElementRef } from '@angular/core';
+import { OnDestroy } from '@angular/core'
 import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
@@ -7,39 +8,58 @@ import { Observable } from 'rxjs/internal/Observable';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  value: string = '';
   title = 'lazycomponent';
-  tag: string[] = ['Album','Carousel'];
+  tag: string[] = ['Album', 'Carousel'];
   @ViewChild('example', { read: ViewContainerRef })
   viewContainer: ViewContainerRef | any;
   componentRef!: ComponentRef<any>;
-  constructor(
-    private viewContainerRef: ViewContainerRef,
-    private componentFactoryResolver: ComponentFactoryResolver
-  ) {
-  };
-  ngOnInit(): void {
-  }
-  fadeout(): void {
-    if (this.componentRef) {
-      this.componentRef.location.nativeElement.classList.add('fadeMeOut');
-    }
+
+  ngOnDestroy(): void {
+    this.componentRef.location.nativeElement.removeEventListener('animationstart');
+    this.componentRef.location.nativeElement.removeEventListener('animationend');
+    this.componentRef.location.nativeElement.removeEventListener('animationiteration');
   }
 
+  listenToAnimationStart(): void {
+    this.componentRef.location.nativeElement.addEventListener('animationstart', () => {
+      console.log('animation started');
+    })
+  }
+  loadEventListener(): void {
+    this.listenToAnimationStart();
+    this.listenToAnimationEnd();
+    this.listenToAnimationIteration();
+  }
+  listenToAnimationEnd(): void {
+    this.componentRef.location.nativeElement.addEventListener('animationend', () => {
+      console.log('animation ended');
+      if (this.componentRef.location.nativeElement.classList == 'fadeMeOut') {
+        this.loadExample();
+      }
+    })
+  }
+
+  listenToAnimationIteration(): void {
+    this.componentRef.location.nativeElement.addEventListener('animationiteration', () => {
+      console.log('animation iteration');
+    })
+  }
+  constructor(
+    private viewContainerRef: ViewContainerRef
+  ) {
+  };
+
   async getExample(value: string) {
-    //const loadComponent = (value: string, callback: any): any => {
-    //  this.loadObjectComponent(value);
-    //  callback();
-      
-    //};
-    //loadComponent(value, this.fadeout());
-    
-    // this must be done first
+    this.value = value;
     if (this.componentRef) {
-      this.componentRef.location.nativeElement.classList.add('fadeMeOut');
-      await this.timeout(1000);
+      this.componentRef.location.nativeElement.classList.replace('fadeMeIn', 'fadeMeOut');
+    } else {
+      this.loadExample();
     }
-    // this must be done second
-    switch (value) {
+  }
+  async loadExample() {
+    switch (this.value) {
       case this.tag[0]: {
         await this.getAlbum();
         break;
@@ -54,19 +74,18 @@ export class AppComponent {
       }
     }
   }
-  timeout(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
   async getAlbum() {
     const { AlbumComponent } = await import("src/app/album/album.component");
     this.viewContainer.clear();
     this.componentRef = this.viewContainer.createComponent(AlbumComponent);
     this.componentRef.location.nativeElement.classList.add('fadeMeIn');
+    this.loadEventListener();
   }
   async getCarousel() {
     const { CarouselComponent } = await import("src/app/carousel/carousel.component");
     this.viewContainer.clear();
     this.componentRef = this.viewContainer.createComponent(CarouselComponent);
     this.componentRef.location.nativeElement.classList.add('fadeMeIn');
+    this.loadEventListener();
   }
 }

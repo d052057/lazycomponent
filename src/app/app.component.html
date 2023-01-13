@@ -38,13 +38,12 @@
         <div id="sidebar" class="collapse collapse-horizontal show border-end">
           <div id="sidebar-nav" class="list-group border-0 rounded-0 text-sm-start min-vh-100">
             <a *ngFor="let t of tag" (click)="getExample(t)" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"><span>{{ t }}</span> </a>
-            <a (click)="fadeout()" class="list-group-item border-end-0 d-inline-block text-truncate" data-bs-parent="#sidebar"><span>Fadeout</span> </a>
           </div>
         </div>
       </div>
       <main class="col ps-md-2 pt-2">
         <a href="#" data-bs-target="#sidebar" data-bs-toggle="collapse" class="border rounded-3 p-1 text-decoration-none" [attr.aria-expanded]="true"><i class="bi bi-list bi-lg py-2 p-1"></i> Menu</a>
-        <ng-template #example></ng-template>
+        <ng-template #example id="example"></ng-template>
       </main>
     </div>
   </div>
