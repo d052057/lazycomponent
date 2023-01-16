@@ -34,6 +34,7 @@
             ]
           },
           "configurations": {
+            
             "production": {
               "budgets": [
                 {
@@ -49,6 +50,7 @@
               ],
               "outputHashing": "all"
             },
+            
             "development": {
               "buildOptimizer": false,
               "optimization": false,

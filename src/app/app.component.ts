@@ -32,9 +32,11 @@ export class AppComponent {
     this.listenToAnimationIteration();
   }
   listenToAnimationEnd(): void {
+
     this.componentRef.location.nativeElement.addEventListener('animationend', () => {
       console.log('animation ended');
-      if (this.componentRef.location.nativeElement.classList == 'fadeMeOut') {
+      var cl = this.componentRef.location.nativeElement.classList;
+      if (cl == 'fadeMeOut') {
         this.loadExample();
       }
     })
@@ -57,8 +59,19 @@ export class AppComponent {
     } else {
       this.loadExample();
     }
+    //this.doSomething(value)
+    //  .then((res: any) => {
+    //    this.componentRef.location.nativeElement.classList.replace('fadeMeIn', 'fadeMeOut');
+    //  })
+    //  .then((newResult: any) => this.loadExample())
+    //  .catch((error: Error) => console.error(error));
   }
+  //doSomething(value: string): any {
+  //  this.value = value;
+  //  return 'done';
+  //}
   async loadExample() {
+    this.viewContainer.clear();
     switch (this.value) {
       case this.tag[0]: {
         await this.getAlbum();
@@ -73,19 +86,16 @@ export class AppComponent {
         break;
       }
     }
+    this.componentRef.location.nativeElement.classList.add('fadeMeIn');
+    this.loadEventListener();
+    this.componentRef.location.nativeElement.detectChanges();
   }
   async getAlbum() {
     const { AlbumComponent } = await import("src/app/album/album.component");
-    this.viewContainer.clear();
-    this.componentRef = this.viewContainer.createComponent(AlbumComponent);
-    this.componentRef.location.nativeElement.classList.add('fadeMeIn');
-    this.loadEventListener();
+    this.componentRef = this.viewContainer.createComponent(AlbumComponent);    
   }
   async getCarousel() {
     const { CarouselComponent } = await import("src/app/carousel/carousel.component");
-    this.viewContainer.clear();
     this.componentRef = this.viewContainer.createComponent(CarouselComponent);
-    this.componentRef.location.nativeElement.classList.add('fadeMeIn');
-    this.loadEventListener();
   }
 }
